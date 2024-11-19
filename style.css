@@ -1,0 +1,57 @@
+/* Style for radio button container */
+div.row-widget.stRadio > div {
+    flex-direction: row;
+    align-items: stretch;
+}
+
+/* Style for radio button options */
+div.row-widget.stRadio > div[role="radiogroup"] > label[data-baseweb="radio"] {
+    background-color: #f0f2f6;
+    padding: 10px 15px;
+    margin: 4px;
+    border-radius: 4px;
+    border: 1px solid #e0e0e0;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+/* Hover effect */
+div.row-widget.stRadio > div[role="radiogroup"] > label[data-baseweb="radio"]:hover {
+    background-color: #e0e2e6;
+}
+
+/* Selected state */
+div.row-widget.stRadio > div[role="radiogroup"] > label[data-baseweb="radio"] input:checked + div {
+    background-color: #1f77b4;
+    color: white;
+}
+
+/* Navigation container */
+section[data-testid="stSidebar"] > div {
+    padding-top: 2rem;
+    background-color: #111;
+}
+
+/* Navigation links */
+.element-container:has(a) {
+    padding: 0.5rem 1rem;
+    margin: 0.2rem 0;
+    transition: all 0.2s ease;
+}
+
+.element-container:has(a):hover {
+    background-color: #333;
+}
+
+/* Active page highlight */
+.element-container:has(a[aria-current="page"]) {
+    background-color: #1f77b4;
+}
+
+/* Link styling */
+a {
+    text-decoration: none;
+    color: #fff !important;
+    width: 100%;
+    display: block;
+} 
