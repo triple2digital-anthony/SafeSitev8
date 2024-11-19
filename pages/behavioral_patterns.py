@@ -307,6 +307,123 @@ def show_behavioral_patterns():
         if st.button("Generate Detailed Report", type="secondary"):
             generate_random_report()
 
+    # Add new dynamic update section
+    with st.expander("Generate Dynamic Analysis Report"):
+        st.subheader("Analysis Parameters")
+        col1, col2, col3 = st.columns(3)
+        
+        with col1:
+            isolation_threshold = st.slider(
+                "Isolation Threshold", 
+                min_value=0, 
+                max_value=100, 
+                value=65,
+                help="Alert threshold for social isolation patterns"
+            )
+        
+        with col2:
+            aggression_threshold = st.slider(
+                "Aggression Threshold", 
+                min_value=0, 
+                max_value=100, 
+                value=75,
+                help="Alert threshold for aggressive behavior"
+            )
+        
+        with col3:
+            monitoring_days = st.slider(
+                "Monitoring Period (Days)", 
+                min_value=7, 
+                max_value=30, 
+                value=14,
+                help="Number of days to analyze patterns"
+            )
+
+        # Update button for dynamic analysis
+        if st.button("Generate Analysis Report", type="primary"):
+            with st.spinner("Analyzing patterns..."):
+                time.sleep(0.5)
+                
+                # Generate random data based on user inputs
+                dates = pd.date_range(end=datetime.now(), periods=monitoring_days)
+                
+                isolation_data = np.random.normal(
+                    loc=isolation_threshold * 0.8, 
+                    scale=15, 
+                    size=monitoring_days
+                ).clip(0, 100)
+                
+                aggression_data = np.random.normal(
+                    loc=aggression_threshold * 0.7, 
+                    scale=12, 
+                    size=monitoring_days
+                ).clip(0, 100)
+
+                # Current values
+                current_isolation = isolation_data[-1]
+                current_aggression = aggression_data[-1]
+                risk_score = (current_isolation * 0.5 + current_aggression * 0.5)
+                
+                # Display dynamic report
+                st.success("Analysis complete!")
+                
+                st.markdown(f"""
+                ### Dynamic Analysis Report
+                
+                #### Risk Assessment
+                - Isolation Index: {current_isolation:.1f}%
+                - Aggression Index: {current_aggression:.1f}%
+                - Combined Risk Score: {risk_score:.1f}%
+                
+                #### Key Findings
+                {generate_findings(current_isolation, current_aggression, isolation_threshold, aggression_threshold)}
+                
+                #### Recommendations
+                {generate_recommendations(risk_score)}
+                """)
+
+                # Show trend chart
+                df = pd.DataFrame({
+                    'Date': dates,
+                    'Isolation Index': isolation_data,
+                    'Aggression Index': aggression_data
+                })
+                
+                fig = px.line(df, x='Date', y=['Isolation Index', 'Aggression Index'],
+                             title='Behavioral Trends Analysis')
+                st.plotly_chart(fig, use_container_width=True)
+
+def generate_findings(isolation, aggression, iso_threshold, agg_threshold):
+    findings = []
+    if isolation > iso_threshold:
+        findings.append(f"⚠️ Isolation levels ({isolation:.1f}%) exceed threshold ({iso_threshold}%)")
+    if aggression > agg_threshold:
+        findings.append(f"🚨 Aggression levels ({aggression:.1f}%) exceed threshold ({agg_threshold}%)")
+    if not findings:
+        findings.append("✅ All metrics within normal ranges")
+    return "\n".join([f"- {finding}" for finding in findings])
+
+def generate_recommendations(risk_score):
+    if risk_score > 75:
+        recs = [
+            "Immediate intervention required",
+            "Schedule urgent assessment",
+            "Increase monitoring frequency"
+        ]
+    elif risk_score > 50:
+        recs = [
+            "Regular check-ins recommended",
+            "Review support system effectiveness",
+            "Monitor for escalation patterns"
+        ]
+    else:
+        recs = [
+            "Maintain current monitoring level",
+            "Continue positive reinforcement",
+            "Document progress patterns"
+        ]
+    return "\n".join([f"- {rec}" for rec in recs])
+
 def create_gauge_chart(title, value):
     """Creates a gauge chart for risk factors"""
     fig = go.Figure(go.Indicator(
@@ -331,6 +448,85 @@ def create_gauge_chart(title, value):
     ))
     fig.update_layout(height=200)
     st.plotly_chart(fig, use_container_width=True)
+
+def generate_detailed_analysis(risk_score, current_isolation, current_aggression, monitoring_days):
+    """Generate detailed risk analysis with rich formatting and icons"""
+    
+    # Risk categories with icons
+    risk_categories = {
+        "Critical": "🔴",
+        "High": "🟠",
+        "Moderate": "🟡",
+        "Low": "🟢"
+    }
+    
+    # Determine overall risk level
+    if risk_score > 85: risk_level = "Critical"
+    elif risk_score > 70: risk_level = "High"
+    elif risk_score > 50: risk_level = "Moderate" 
+    else: risk_level = "Low"
+
+    # Generate behavioral indicators
+    indicators = []
+    if current_isolation > 80:
+        indicators.append("🚨 Severe social withdrawal detected")
+    elif current_isolation > 60:
+        indicators.append("⚠️ Increased isolation patterns")
+    
+    if current_aggression > 80:
+        indicators.append("⛔ Critical aggression risk")
+    elif current_aggression > 60:
+        indicators.append("⚠️ Elevated aggression indicators")
+
+    # Generate intervention urgency
+    if risk_score > 85:
+        urgency = "🚨 **IMMEDIATE INTERVENTION REQUIRED**"
+    elif risk_score > 70:
+        urgency = "⚠️ **Urgent Attention Needed**"
+    elif risk_score > 50:
+        urgency = "📊 Enhanced Monitoring Recommended"
+    else:
+        urgency = "✅ Continue Standard Monitoring"
+
+    return risk_level, risk_categories[risk_level], indicators, urgency
+
+def generate_support_recommendations(risk_score, isolation_trend, aggression_trend):
+    """Generate targeted support recommendations based on risk factors"""
+    
+    recommendations = []
+    
+    # Core recommendations based on risk level
+    if risk_score > 85:
+        recommendations.extend([
+            "🏥 Initiate crisis intervention protocol",
+            "👥 Schedule immediate clinical assessment",
+            "📞 Alert emergency response team",
+            "🔔 Increase monitoring frequency to hourly checks"
+        ])
+    elif risk_score > 70:
+        recommendations.extend([
+            "📋 Conduct comprehensive risk assessment",
+            "👥 Schedule urgent counseling session",
+            "📱 Implement daily check-in protocol",
+            "📊 Review and adjust safety plan"
+        ])
+    
+    # Additional recommendations based on specific patterns
+    if isolation_trend == "increasing":
+        recommendations.extend([
+            "🤝 Enhance social support network engagement",
+            "📅 Schedule structured social activities",
+            "👥 Implement peer support program"
+        ])
+    
+    if aggression_trend == "increasing":
+        recommendations.extend([
+            "🧘 Implement de-escalation techniques",
+            "😤 Review anger management strategies",
+            "🎯 Identify and document triggers"
+        ])
+    
+    return recommendations
 
 if __name__ == "__main__":
     show_behavioral_patterns()
