@@ -3,16 +3,25 @@ import streamlit as st
 def apply_custom_styles():
     st.markdown("""
         <style>
-            /* Custom CSS styles */
-            .reportview-container .main .block-container{
-                padding-top: 2rem;
-            }
-            .sidebar .sidebar-content {
-                padding-top: 2rem;
-            }
-            .css-1d391kg p {
-                font-size: 18px;
-            }
-            /* Add more styles as needed */
+        /* Move sidebar down by 200px */
+        section[data-testid="stSidebar"] {
+            margin-top: -200px;
+        }
+        
+        /* Adjust main content area to align with moved sidebar */
+        .main .block-container {
+            padding-top: 2rem;
+            margin-top: -200px;
+        }
+        
+        /* Ensure proper spacing for sidebar content */
+        [data-testid="stSidebar"][aria-expanded="true"] > div:first-child {
+            padding-top: 0rem;
+        }
+        
+        /* Additional styling for clean layout */
+        .stApp {
+            margin-top: 0;
+        }
         </style>
     """, unsafe_allow_html=True)
