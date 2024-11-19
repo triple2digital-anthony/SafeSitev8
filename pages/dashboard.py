@@ -56,7 +56,7 @@ def create_activity_heatmap(data):
     return fig
 
 def show_dashboard():
-    st.title("Security Operations Dashboard")
+    st.title("Safe Site Operations Dashboard")
     
     # Create three columns for top metrics
     col1, col2, col3 = st.columns(3)
