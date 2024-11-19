@@ -1,8 +1,6 @@
 import streamlit as st
 from pages.dashboard import show_dashboard
 from pages.threat_analysis import show_threat_analysis
-from pages.behavioral_patterns import show_behavioral_patterns
-from pages.settings import show_settings
 from pages.video_upload import show_video_upload
 
 # Configure the page
@@ -13,69 +11,49 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# Custom CSS for the sidebar
+# Custom CSS to match the screenshot exactly
 st.markdown("""
     <style>
-    .sidebar-nav {
-        padding: 10px;
+    .sidebar .sidebar-content {
+        background-color: #ffffff;
     }
-    .nav-link {
+    
+    /* Navigation item styling to match screenshot */
+    div[data-testid="stRadio"] > div {
+        padding: 0;
+    }
+    
+    div[data-testid="stRadio"] label {
         display: flex;
         align-items: center;
-        padding: 10px;
-        text-decoration: none;
-        color: #262730;
-        margin-bottom: 5px;
-        border-radius: 5px;
+        padding: 0.5rem 1rem;
+        cursor: pointer;
+        border-radius: 0.5rem;
+        margin: 0.2rem 0;
     }
-    .nav-link:hover {
+    
+    div[data-testid="stRadio"] label:hover {
         background-color: #f0f2f6;
     }
-    .nav-link.active {
+    
+    div[data-testid="stRadio"] label[data-checked="true"] {
         background-color: #0068c9;
         color: white;
     }
-    .nav-icon {
-        margin-right: 10px;
-        width: 24px;
-        text-align: center;
-    }
     </style>
-    """, unsafe_allow_html=True)
+""", unsafe_allow_html=True)
 
 def main():
-    # Sidebar navigation
-    st.sidebar.title("Safe Site")
+    st.sidebar.title("Navigation")
     
-    # Dictionary of pages with their icons and functions
     pages = {
-        "Dashboard": ("📊", show_dashboard),
-        "Threat Analysis": ("⚠️", show_threat_analysis),
-        "Video Upload": ("📹", show_video_upload),
-        "Behavioral Patterns": ("📈", show_behavioral_patterns),
-        "Settings": ("⚙️", show_settings)
+        "Live Dashboard": show_dashboard,
+        "Threat Analysis": show_threat_analysis,
+        "Video Upload": show_video_upload
     }
     
-    # Create navigation menu
-    selected_page = st.sidebar.radio(
-        "",
-        list(pages.keys()),
-        format_func=lambda x: f"{pages[x][0]} {x}"
-    )
-    
-    # Display selected page
-    pages[selected_page][1]()
-    
-    # Add any additional sidebar widgets below navigation
-    with st.sidebar:
-        st.markdown("---")
-        st.markdown("### System Status")
-        st.success("All Systems Operational")
-        
-        # Add any other sidebar widgets you had before
-        st.markdown("### Quick Stats")
-        st.metric("Active Cameras", "12")
-        st.metric("Alert Level", "Low")
+    selection = st.sidebar.radio("Go to", list(pages.keys()))
+    pages[selection]()
 
 if __name__ == "__main__":
     main() 
