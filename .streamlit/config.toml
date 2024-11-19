@@ -9,10 +9,11 @@ enableCORS = true
 gatherUsageStats = false
 
 [theme]
-primaryColor = "#1f77b4"
+primaryColor = "#0068c9"
 backgroundColor = "#ffffff"
 secondaryBackgroundColor = "#f0f2f6"
 textColor = "#262730"
 
 [client]
 showSidebarNavigation = false
+toolbarMode = "minimal"
